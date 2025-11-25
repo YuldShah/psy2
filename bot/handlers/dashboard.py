@@ -1,7 +1,7 @@
 from aiogram import Router, types, F
 from aiogram.filters import Command
 from bot.database.main import get_db_pool
-from bot.config import ADMIN_IDS
+from bot.config import ADMIN_IDS, GOOGLE_SHEET_ID
 from bot.services.sheets import sheets_client
 
 router = Router()
@@ -29,10 +29,14 @@ async def show_dashboard(message: types.Message):
             f"<i>Google Sheets Sync is active.</i>"
         )
         
-        # Add Sync Button
-        keyboard = types.InlineKeyboardMarkup(inline_keyboard=[
-            [types.InlineKeyboardButton(text="🔄 Sync Now", callback_data="dashboard_sync")]
-        ])
+        # Build keyboard with Google Sheets link and Sync button
+        buttons = []
+        if GOOGLE_SHEET_ID:
+            sheet_url = f"https://docs.google.com/spreadsheets/d/{GOOGLE_SHEET_ID}"
+            buttons.append([types.InlineKeyboardButton(text="📄 Open Google Sheet", url=sheet_url)])
+        buttons.append([types.InlineKeyboardButton(text="🔄 Sync Now", callback_data="dashboard_sync")])
+        
+        keyboard = types.InlineKeyboardMarkup(inline_keyboard=buttons)
         
         await message.answer(text, reply_markup=keyboard)
 
