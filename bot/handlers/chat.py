@@ -15,16 +15,7 @@ router = Router()
 @router.message(F.text == "💬 Chat")
 async def enter_chat_mode(message: types.Message, state: FSMContext):
     await state.set_state(StudentStates.chatting)
-    await message.answer(
-        "You are now in chat mode. Every message you send will be forwarded to the psychologist anonymously (unless you choose to reveal yourself).\n\n"
-        "Send your message:",
-        reply_markup=types.ReplyKeyboardRemove() # Or keep main menu? User requested "enters chatting state", implies a mode.
-    )
-    # Let's keep a "Exit Chat" button maybe? Or just handle text.
-    # For now, let's assume they can just send messages. 
-    # To exit, maybe /start or a specific button. 
-    # Adding a "Back" button would be good UX, but sticking to requirements first.
-    await message.answer("Type '🔙 Back' to return to the main menu.", reply_markup=types.ReplyKeyboardMarkup(keyboard=[[types.KeyboardButton(text="🔙 Back")]], resize_keyboard=True))
+    await message.answer("You are now in chat mode. Every message you send will be forwarded to the psychologist.", reply_markup=types.ReplyKeyboardMarkup(keyboard=[[types.KeyboardButton(text="🔙 Back")]], resize_keyboard=True))
 
 
 @router.message(F.text == "🔙 Back", StudentStates.chatting)
