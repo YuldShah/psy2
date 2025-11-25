@@ -50,7 +50,7 @@ async def forward_message_to_psychologist(message: types.Message):
             f"<blockquote>"
             f"👤 {user['full_name']}\n"
             f"{student_id_line}"
-            f"</blockquote>\n\n"
+            f"</blockquote>\n"
             f"<i>{message.text}</i>"
         )
         
